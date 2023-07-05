@@ -13,3 +13,6 @@
 
 4 - Vérifier que Kedro a bien été installé :
     kedro info
+
+5 - Création d'un projet vide kedro : 
+    kedro new
