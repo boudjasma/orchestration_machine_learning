@@ -1,2 +1,5 @@
-/env
-env/
+Lib/
+Scripts/
+pyvenv.cfg
+Include
+data/
