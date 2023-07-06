@@ -33,9 +33,6 @@ Kedro
 
 4 - Vérifier que Kedro a bien été installé :
     kedro info
-<<<<<<< HEAD
 
 5 - Création d'un projet vide kedro : 
     kedro new
-=======
->>>>>>> c15ef77ecdcdf19a5ea16d24ca0bfce075952ef9
