@@ -1,2 +1,1 @@
-input_param:
-  n_rows: 100
+test_ratio: 0.3

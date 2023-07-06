@@ -11,32 +11,31 @@ from sklearn.model_selection import train_test_split
 
 
 #remove lines where passengers_count were not reprsented
-def remove_passenger_count(train: pd.DataFrame, test: pd.DataFrame) -> List[pd.DataFrame]:
+def remove_passenger_count(train: pd.DataFrame, test: pd.DataFrame) -> Dict[str,any]:
     def remove_pass_func(data: pd.DataFrame) ->pd.DataFrame:
         index = data[(data['passenger_count'] == 7) | (data['passenger_count'] == 8) | (data['passenger_count'] == 9) | (data['passenger_count'] == 0)].index
         data.drop(index, inplace=True)
         return data
-    return [remove_pass_func(train), remove_pass_func(test)]
+    return dict(train_remove_passenger=remove_pass_func(train), test_remove_passenger=remove_pass_func(test))
 
 
-#
-def remove_extrem_values(train: pd.DataFrame, test: pd.DataFrame) -> List[pd.DataFrame]:
+def remove_extrem_values(train: pd.DataFrame, test: pd.DataFrame) -> Dict[str,any]:
     def remove_extrem_func(data: pd.DataFrame) ->pd.DataFrame:
         mean = np.mean(data['trip_duration'])
         standard_deviation = np.std(data['trip_duration'])
         data = data[data['trip_duration'].between(mean - 2 * standard_deviation, mean + 2 * standard_deviation)]
         return data
-    return [remove_extrem_func(train), remove_extrem_func(test)]
+    return dict(train_remove_values=remove_extrem_func(train), test_remove_values=remove_extrem_func(test))
 
 #    
-def map_store_and_fwd_flag(train: pd.DataFrame, test: pd.DataFrame) -> List[pd.DataFrame]:
+def map_store_and_fwd_flag(train: pd.DataFrame, test: pd.DataFrame) -> Dict[str,any]:
     def map_func(data: pd.DataFrame) ->pd.DataFrame:
         data['store_and_fwd_flag'] = data['store_and_fwd_flag'].map(lambda x: 0 if x == 'N' else 1)
         return data
-    return [map_func(train), map_func(test)]
+    return dict(train_map_store=map_func(train), test_map_sotre=map_func(test))
 
 #
-def decompose_date(train: pd.DataFrame, test: pd.DataFrame) -> List[pd.DataFrame]:
+def decompose_date(train: pd.DataFrame, test: pd.DataFrame) -> Dict[str,any]:
     def decompose(data: pd.DataFrame) -> pd.DataFrame:
         data['pickup_datetime'] = pd.to_datetime(data.pickup_datetime)
         if 'dropoff_datetime' in data.columns:
@@ -58,9 +57,9 @@ def decompose_date(train: pd.DataFrame, test: pd.DataFrame) -> List[pd.DataFrame
         data['pickup_dayofyear'] = data['pickup_datetime'].dt.dayofyear
         data['pickup_month'] = data['pickup_datetime'].dt.month
         return data
-    return [decompose(train), decompose(test)]
+    return dict(train_decompose_date=decompose(train), test_decompose_date=decompose(test))
 
-def add_is_holidays(train: pd.DataFrame, test: pd.DataFrame) -> List[pd.DataFrame]:
+def add_is_holidays(train: pd.DataFrame, test: pd.DataFrame) -> Dict[str,any]:
     def add(data:pd.DataFrame) -> pd.DataFrame:
         calendar = USFederalHolidayCalendar()
         holidays = calendar.holidays()
@@ -69,9 +68,9 @@ def add_is_holidays(train: pd.DataFrame, test: pd.DataFrame) -> List[pd.DataFram
         data['pickup_near_holiday'] = (pd.to_datetime(data.pickup_datetime.dt.date).isin(holidays + timedelta(days=1)) | pd.to_datetime(data.pickup_datetime.dt.date).isin(holidays - timedelta(days=1)))
         data['pickup_near_holiday'] = data.pickup_near_holiday.map(lambda x: 1 if x == True else 0)        
         return data
-    return [add(train), add(test)]
+    return dict(train_is_holiday=add(train), test_is_holiday=add(test))
 
-def compute_distances(train: pd.DataFrame, test: pd.DataFrame) -> List[pd.DataFrame]:
+def compute_distances(train: pd.DataFrame, test: pd.DataFrame) -> Dict[str,any]:
     def compute(data: pd.DataFrame) -> pd.DataFrame:
         # 1 Haversine Distance
         def haversine_distance(lat1, lng1, lat2, lng2):
@@ -106,7 +105,8 @@ def compute_distances(train: pd.DataFrame, test: pd.DataFrame) -> List[pd.DataFr
         data['center_longitude'] = (data['pickup_longitude'].values + data['dropoff_longitude'].values) / 2
     
         return data
-    return [compute(train), compute(test)]
+    
+    return dict(train_compute_distances=compute(train), test_compute_distances=compute(test))
 
 #
 def split_dataset(data: pd.DataFrame, test_ratio: float) -> Dict[str, any]:
