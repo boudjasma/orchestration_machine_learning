@@ -11,6 +11,16 @@
 #   type: pandas.CSVDataSet
 #   filepath: data/01_raw/split_test.csv
 
-dataset:
+train_data:
   type: pandas.CSVDataSet
-  filepath: data/01_raw/*.csv
+  filepath: data/01_raw/split_train.csv
+  load_args:
+    sep: ";"
+    index_col: false
+
+test_data:
+  type: pandas.CSVDataSet
+  filepath: data/01_raw/split_test.csv
+  load_args:
+    sep: ";"
+    index_col: false

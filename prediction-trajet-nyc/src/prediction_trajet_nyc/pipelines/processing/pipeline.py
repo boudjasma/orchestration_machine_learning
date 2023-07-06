@@ -7,14 +7,13 @@ def create_pipeline():
         [
             node(
                 remove_passenger_count,
-                "dataset",
-                dict(train_remose_passenger="train_remove_passenger", test_remove_passenger="train_remose_passenger"),
-                name="node1"
+                ["train_data", "test_data"],
+                dict(train_remove_passenger="train_remove_passenger", test_remove_passenger="train_remose_passenger")
             ),
             # node(
-            #     remove_passenger_count, 
-            #     inputs=["train_data", "test_data"], 
-            #     outputs= ["train_data_inter1", "test_data_inter1"]
+            #     remove_extrem_values, 
+            #     ["train_remove_passenger", "train_remose_passenger"], 
+            #     dict(train_remove_values="train_remove_values",test_remove_values="test_remove_values")
             #     ),
             # node(
             #     remove_extrem_values, 

@@ -13,6 +13,7 @@ from sklearn.model_selection import train_test_split
 #remove lines where passengers_count were not reprsented
 def remove_passenger_count(train: pd.DataFrame, test: pd.DataFrame) -> Dict[str,any]:
     def remove_pass_func(data: pd.DataFrame) ->pd.DataFrame:
+        print(data['passenger_count'])
         index = data[(data['passenger_count'] == 7) | (data['passenger_count'] == 8) | (data['passenger_count'] == 9) | (data['passenger_count'] == 0)].index
         data.drop(index, inplace=True)
         return data
@@ -70,7 +71,7 @@ def add_is_holidays(train: pd.DataFrame, test: pd.DataFrame) -> Dict[str,any]:
         return data
     return dict(train_is_holiday=add(train), test_is_holiday=add(test))
 
-def compute_distances(train: pd.DataFrame, test: pd.DataFrame) -> Dict[str,any]:
+def compute_distances(train: pd.DataFrame, test: pd.DataFrame) -> Dict[any,any]:
     def compute(data: pd.DataFrame) -> pd.DataFrame:
         # 1 Haversine Distance
         def haversine_distance(lat1, lng1, lat2, lng2):
