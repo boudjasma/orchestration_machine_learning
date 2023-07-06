@@ -1,38 +1,49 @@
-from kedro.pipeline import node
+from kedro.pipeline import Pipeline, node
+
+from .nodes import *
 
 def create_pipeline():
-    return Pipeline(
+    return Pipeline(  
         [
             node(
                 remove_passenger_count, 
-                inputs='input_data', 
-                outputs='clean_data'
+                inputs=["train_data", "test_data"], 
+                outputs= ["train_data_inter1", "test_data_inter1"]
                 ),
             node(
-                remove_extremvalues, 
-                inputs='clean_data', 
-                outputs='formatted_data'
+                remove_extrem_values, 
+                inputs=["train_data_inter1", "test_data_inter1"], 
+                outputs= ["train_data_inter2", "test_data_inter2"]
                 ),
             node(
-                format_flags, 
-                inputs='formatted_data', 
-                outputs='formatted_data'
+                map_store_and_fwd_flag, 
+                inputs=["train_data_inter2", "test_data_inter2"], 
+                outputs= ["train_data_inter3", "test_data_inter3"]
             ),
             node(
-                format_data, 
-                inputs='formatted_data', 
-                outputs='formatted_data'
+                decompose_date, 
+                inputs=["train_data_inter3", "test_data_inter3"], 
+                outputs= ["train_data_inter4", "test_data_inter4"]
             ),
             node(
-                is_holidays, 
-                inputs='formatted_data', 
-                outputs='formatted_data'
+                add_is_holidays, 
+                inputs=["train_data_inter4", "test_data_inter4"], 
+                outputs= ["train_data_inter5", "test_data_inter5"]
                 ),
             node(
                 compute_distances, 
-                inputs='formatted_data', 
-                outputs='processed_data'
+                inputs=["train_data_inter5", "test_data_inter6"], 
+                outputs= ["train_clean", "test_clean"]
                 ),
-            # Add other nodes and connections here
-        
+            node(
+            split_dataset,
+            ["train_clean", "params:test_ratio"],
+            dict(
+                    X_train="X_train",
+                    y_train="y_train",
+                    X_test="X_test",
+                    y_test="y_test"
+                )
+            )
     ])
+                
