@@ -20,22 +20,22 @@ def remove_passenger_count(train: pd.DataFrame, test: pd.DataFrame) -> Dict[str,
     return dict(train_remove_passenger=remove_pass_func(train), test_remove_passenger=remove_pass_func(test))
 
 
-def remove_extrem_values(train: pd.DataFrame, test: pd.DataFrame) -> Dict[str,any]:
+def remove_extrem_values(train: pd.DataFrame, ) -> pd.DataFrame:
     def remove_extrem_func(data: pd.DataFrame) ->pd.DataFrame:
         mean = np.mean(data['trip_duration'])
         standard_deviation = np.std(data['trip_duration'])
         data = data[data['trip_duration'].between(mean - 2 * standard_deviation, mean + 2 * standard_deviation)]
         return data
-    return dict(train_remove_values=remove_extrem_func(train), test_remove_values=remove_extrem_func(test))
+    return remove_extrem_func(train)
 
-#    
+
 def map_store_and_fwd_flag(train: pd.DataFrame, test: pd.DataFrame) -> Dict[str,any]:
     def map_func(data: pd.DataFrame) ->pd.DataFrame:
         data['store_and_fwd_flag'] = data['store_and_fwd_flag'].map(lambda x: 0 if x == 'N' else 1)
         return data
     return dict(train_map_store=map_func(train), test_map_sotre=map_func(test))
 
-#
+
 def decompose_date(train: pd.DataFrame, test: pd.DataFrame) -> Dict[str,any]:
     def decompose(data: pd.DataFrame) -> pd.DataFrame:
         data['pickup_datetime'] = pd.to_datetime(data.pickup_datetime)
