@@ -106,5 +106,8 @@ def compute_distances(data: pd.DataFrame) -> pd.DataFrame:
     
     return data
 
+def split_dataset(test_data_set: pd.DataFrame) -> pd.DataFrame:
+
+
 
 
