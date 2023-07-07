@@ -3,3 +3,5 @@ pandas
 scikit-learn
 scipy
 matplotlib
+google-cloud-datastore
+google-cloud-storage
