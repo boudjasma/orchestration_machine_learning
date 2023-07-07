@@ -8,22 +8,8 @@ import pandas as pd
 from sklearn.model_selection import KFold
 from sklearn.cluster import MiniBatchKMeans
 from sklearn.model_selection import train_test_split
-from kedro.io import CSVDataSet
+from kedro.extras.datasets.pandas import CSVDataSet
 import gcsfs
-
-def fetch_data_from_gcs() -> dict:
-    gcs_bucket = "your-gcs-bucket-name"
-    gcs_paths = {
-        "path-to-your-train-file.csv": "train_dataframe",
-        "path-to-your-test-file.csv": "test_dataframe"
-    }
-    fs = gcsfs.GCSFileSystem()
-    data = {}
-    for path, output_name in gcs_paths.items():
-        with fs.open(f"{gcs_bucket}/{path}", "rb") as f:
-            dataframe = pd.read_csv(f)
-            data[path] = dataframe
-    return dict(data)
 
 #remove lines where passengers_count were not reprsented
 def remove_passenger_count(train: pd.DataFrame, test: pd.DataFrame) -> Dict[str,any]:

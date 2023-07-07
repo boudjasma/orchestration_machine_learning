@@ -5,16 +5,10 @@ from .nodes import *
 def create_pipeline():
     return Pipeline(  
         [
-            node(
-                fetch_data_from_gcs,
-                None,
-                dict(path_to_your_train_file_csv="train_dataframe",
-                    path_to_your_test_file_csv="test_dataframe"
-                    )
-            ),
+            
             node(
                 remove_passenger_count,
-                ["train_dataframe", "test_dataframe"],
+                ["train_data", "test_data"],
                 dict(train_remove_passenger="train_remove_passenger", test_remove_passenger="test_remove_passenger")
             ),
             node(
