@@ -25,6 +25,33 @@ test_data:
     sep: ";"
     index_col: false
 
+#gcp
+# catalog.yml
+
+fetched_data:
+  type: dict
+  description: Fetched data from GCS bucket
+  save_args:
+    pickle_protocol: 4
+
+train_dataframe:
+  type: pandas.CSVDataSet
+  filepath: data/01_raw/train.csv
+  load_args:
+    sep: ","
+    dtype: object
+
+test_dataframe:
+  type: pandas.CSVDataSet
+  filepath: data/01_raw/test.csv
+  load_args:
+    sep: ","
+    dtype: object
+
+
+
+
+
 X_train:
   type: pandas.CSVDataSet
   filepath: data/05_model_input/X_train.csv
